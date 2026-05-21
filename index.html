@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dann - Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0a0a0a;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    .hero-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url( "img/Background.png") center center / cover no-repeat;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        rgba(10, 10, 10, 0.3) 0%,
+        rgba(10, 10, 10, 0.5) 50%,
+        rgba(10, 10, 10, 0.8) 100%
+      );
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    /* Intro Animation Classes */
+    .hero-bg {
+      opacity: 0;
+      transform: scale(1.1);
+      transition: opacity 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  transform 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .hero-bg.animate-in {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .hero-overlay {
+      opacity: 0;
+      transition: opacity 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s;
+    }
+
+    .hero-overlay.animate-in {
+      opacity: 1;
+    }
+
+    .profile-image {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      /* Intro animation */
+      opacity: 0;
+      transform: translateY(40px) scale(0.9);
+      transition: opacity 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .profile-image.animate-in {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      /* Intro animation */
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .hero-title.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(0.875rem, 2vw, 1.125rem);
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 3rem;
+      /* Intro animation */
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .hero-subtitle.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      /* Intro animation - starts hidden */
+      opacity: 0;
+      transition: opacity 1s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .scroll-indicator.animate-in {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      animation: bounce 2s infinite 1.5s;
+    }
+
+    .scroll-indicator svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    /* Spacer for scroll effect */
+    .hero-spacer {
+      height: 100vh;
+      pointer-events: none;
+    }
+
+    /* Main Content */
+    .main-content {
+      position: relative;
+      z-index: 10;
+      background-color: #0a0a0a;
+      min-height: 100vh;
+    }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1.25rem 2rem;
+      /* Intro animation */
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .nav.animate-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffffff;
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #ffffff;
+      transition: all 0.3s ease;
+    }
+
+    /* Gallery Section */
+    .gallery-section {
+      padding: 4rem 2rem 6rem;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .gallery-layout {
+      display: flex;
+      gap: 3rem;
+      align-items: flex-start;
+    }
+
+    /* About Me Sidebar */
+    .about-sidebar {
+      flex: 0 0 320px;
+      position: sticky;
+      top: 100px;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      backdrop-filter: blur(10px);
+      /* Intro animation */
+      opacity: 0;
+      transform: translateX(-30px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .about-sidebar.animate-in {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .about-profile {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .about-role {
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-divider {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+      margin-bottom: 1.5rem;
+    }
+
+    .about-description {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1.5rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: #ffffff;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .about-social {
+      display: flex;
+      gap: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .social-link svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* Gallery Content Area */
+    .gallery-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1rem;
+      font-weight: 300;
+      margin-bottom: 3rem;
+    }
+
+    /* Moodboard Gallery - CSS Columns for true masonry */
+    .gallery {
+      column-count: 3;
+      column-gap: 2rem;
+      padding: 1rem;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: visible;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  box-shadow 0.4s ease;
+      margin-bottom: 2rem;
+      break-inside: avoid;
+      display: inline-block;
+      width: 100%;
+      background: #1a1a1a;
+      padding: 12px;
+      box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.03);
+    }
+
+    .gallery-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .gallery-item:hover {
+      box-shadow: 
+        0 4px 16px rgba(0, 0, 0, 0.2),
+        0 16px 48px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.08);
+      z-index: 10;
+    }
+
+    .gallery-item .image-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 2px;
+      background: #0a0a0a;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                  filter 0.4s ease;
+      filter: saturate(0.95) contrast(1.02);
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.02);
+      filter: saturate(1.05) contrast(1.05);
+    }
+
+    /* Elegant inner frame effect */
+    .gallery-item::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Subtle corner accents */
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 30px;
+      height: 30px;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-item:hover::after {
+      opacity: 1;
+    }
+
+    /* Image caption/label */
+    .gallery-item-label {
+      padding: 10px 4px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gallery-item-title {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.02em;
+      transition: color 0.3s ease;
+    }
+
+    .gallery-item:hover .gallery-item-title {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .gallery-item-number {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.625rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.05em;
+    }
+
+    /* Slight rotation for organic moodboard feel */
+    .gallery-item.rotate-left {
+      transform: rotate(-0.8deg) translateY(0);
+    }
+
+    .gallery-item.rotate-right {
+      transform: rotate(0.8deg) translateY(0);
+    }
+
+    .gallery-item.rotate-left.visible,
+    .gallery-item.rotate-right.visible {
+      opacity: 1;
+    }
+
+    .gallery-item.rotate-left:hover,
+    .gallery-item.rotate-right:hover {
+      transform: rotate(0deg) translateY(-6px) scale(1.01);
+    }
+
+    /* Staggered entrance animation delays */
+    .gallery-item:nth-child(3n+1) { transition-delay: 0ms; }
+    .gallery-item:nth-child(3n+2) { transition-delay: 80ms; }
+    .gallery-item:nth-child(3n) { transition-delay: 160ms; }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.7) 0%,
+        rgba(0, 0, 0, 0.2) 30%,
+        rgba(0, 0, 0, 0) 60%
+      );
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.25rem;
+      border-radius: 2px;
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+      opacity: 1;
+    }
+
+    .gallery-item-overlay .gallery-item-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .lightbox.active .lightbox-content {
+      transform: scale(1);
+    }
+
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -3rem;
+      right: 0;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 2rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-close:hover {
+      opacity: 1;
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: #ffffff;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s ease;
+    }
+
+    .lightbox-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .lightbox-prev {
+      left: -4rem;
+    }
+
+    .lightbox-next {
+      right: -4rem;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.875rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(10, 10, 10, 0.98);
+      z-index: 99;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .mobile-menu.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .mobile-menu a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.5rem;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 1200px) {
+      .about-sidebar {
+        flex: 0 0 280px;
+      }
+
+      .gallery {
+        column-count: 2;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .mobile-menu {
+        display: flex;
+      }
+
+      .gallery-layout {
+        flex-direction: column;
+      }
+
+      .about-sidebar {
+        position: relative;
+        top: 0;
+        flex: none;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .about-sidebar .about-profile {
+        margin-bottom: 0;
+      }
+
+      .about-sidebar-text {
+        flex: 1;
+        min-width: 250px;
+      }
+
+      .about-sidebar .about-name {
+        margin-bottom: 0.25rem;
+      }
+
+      .about-sidebar .about-role {
+        margin-bottom: 1rem;
+      }
+
+      .about-sidebar .about-divider {
+        display: none;
+      }
+
+      .about-sidebar .about-description {
+        margin-bottom: 0;
+      }
+
+      .about-sidebar .about-stats {
+        width: 100%;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        margin-bottom: 0;
+      }
+
+      .about-sidebar .about-social {
+        width: 100%;
+        margin-top: 1rem;
+        padding-top: 1rem;
+      }
+
+      .gallery {
+        column-count: 2;
+      }
+
+      .lightbox-prev {
+        left: 1rem;
+      }
+
+      .lightbox-next {
+        right: 1rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .gallery {
+        column-count: 1;
+      }
+
+      /* Remove rotation effects on mobile for cleaner look */
+      .gallery-item.rotate-left,
+      .gallery-item.rotate-right {
+        transform: none;
+      }
+
+      .gallery-item.rotate-left.visible,
+      .gallery-item.rotate-right.visible {
+        transform: none;
+      }
+
+      .profile-image {
+        width: 140px;
+        height: 140px;
+      }
+
+      .about-sidebar {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .about-sidebar .about-profile {
+        width: 80px;
+        height: 80px;
+      }
+
+      .about-sidebar-text {
+        min-width: 100%;
+      }
+
+      .gallery-section {
+        padding: 3rem 1rem 4rem;
+      }
+
+      .nav {
+        padding: 1rem;
+      }
+
+      .lightbox-nav {
+        width: 40px;
+        height: 40px;
+      }
+
+      .lightbox-prev {
+        left: 0.5rem;
+      }
+
+      .lightbox-next {
+        right: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section (Fixed Background) -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content" id="heroContent">
+      <img src="img/logo.webp" alt="Artist Profile" class="profile-image">
+      <h1 class="hero-title">Dann</h1>
+      <p class="hero-subtitle">3D Art &bull; Illustration &bull; Concept Art</p>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spacer for scroll effect -->
+  <div class="hero-spacer"></div>
+
+  <!-- Main Content (Slides over hero) -->
+  <main class="main-content">
+    <!-- Navigation -->
+    <nav class="nav">
+      <div class="nav-container">
+        <p href="#" class="nav-logo">Portfolio</p>
+        <div class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+          
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+   
+    </div>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section" id="work">
+      <div class="gallery-layout">
+        <!-- About Me Sidebar -->
+        <aside class="about-sidebar" id="aboutSidebar">
+          <img src="img/Profile_Photo.png" alt="Profile" class="about-profile">
+          <div class="about-sidebar-text">
+            <h3 class="about-name">Edwar Ospina</h3>
+            <p class="about-role">Digital Artist</p>
+            <div class="about-divider"></div>
+            <p class="about-description">
+               I am an artist focused on 3D sculpting, Concept Art, and Illustration, with projects oriented toward videogames and audiovisual productions.
+            </p>
+          </div>
+          <div class="about-stats">
+            <div class="stat-item">
+              <span class="stat-number">30+</span>
+              <span class="stat-label">Projects</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">2</span>
+              <span class="stat-label">Years</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">30+</span>
+              <span class="stat-label">Clients</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number">2</span>
+              <span class="stat-label">Awards</span>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Gallery Content -->
+        <div class="gallery-content">
+          <h2 class="section-title">Selected Works</h2>
+          <p class="section-subtitle">A collection of illustrations and digital artwork</p>
+
+          <div class="gallery" id="gallery">
+            <div class="gallery-item" data-index="0">
+              <div class="image-wrapper">
+                <img src="img/Alucard.png" alt="ALucard" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Alucard - Castlevania Symphony of the Night</span>
+                <span class="gallery-item-number">01</span>
+              </div>
+            </div>
+            <div class="gallery-item" data-index="1">
+              <div class="image-wrapper">
+                <img src="img/concept enviroment.png" alt="Concept Art" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Enviroment - Fuego ardiente</span>
+                <span class="gallery-item-number">02</span>
+              </div>
+            </div>
+            <div class="gallery-item" data-index="2">
+              <div class="image-wrapper">
+                <img src="img/f1_perspectiva.jpg" alt="Botanical Dreams" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Monoplaza F1</span>
+                <span class="gallery-item-number">03</span>
+              </div>
+            </div>
+           
+            <div class="gallery-item" data-index="3">
+              <div class="image-wrapper">
+                <img src="img/groom yupanki post-process.png" alt="3d character" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Groom Yupanki</span>
+                <span class="gallery-item-number">04</span>
+              </div>
+            </div>
+            <div class="gallery-item" data-index="4">
+              <div class="image-wrapper">
+                <img src="img/John_Constantine.png" alt="Constantine" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Constantine - Webcomic Illustration</span>
+                <span class="gallery-item-number">05</span>
+              </div>
+            </div>
+            <div class="gallery-item" data-index="5">
+              <div class="image-wrapper">
+                <img src="img/hellboy.png" alt="Hellboy" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Hellboy - Fanart</span>
+                <span class="gallery-item-number">06</span>
+              </div>
+            </div>
+        
+            <div class="gallery-item" data-index="6">
+              <div class="image-wrapper">
+                <img src="img/portada.png" alt="Book Theme" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Dyot Anima Putrida</span>
+                <span class="gallery-item-number">07</span>
+              </div>
+            </div>
+            <div class="gallery-item" data-index="7">
+              <div class="image-wrapper">
+                <img src="img/Poster Mi Querida Luna 1.jpeg" alt="Mi Querida Luna" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">Mi Querida Luna</span>
+                <span class="gallery-item-number">8</span>
+              </div>
+            </div>
+            <div class="gallery-item" data-index="8">
+              <div class="image-wrapper">
+                <img src="img/Posters_The_Living_Thombstonepng.png" alt="The Living Thombstone" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">The Living Tombstone</span>
+                <span class="gallery-item-number">9</span>
+              </div>
+            </div>
+            <div class="gallery-item" data-index="9">
+              <div class="image-wrapper">
+                <img src="img/render principal dwayne (the rock).png" alt="Culinary Art" loading="lazy">
+                <div class="gallery-item-overlay">
+                </div>
+              </div>
+              <div class="gallery-item-label">
+                <span class="gallery-item-title">The rock</span>
+                <span class="gallery-item-number">10</span>
+              </div>
+            </div>
+          </div>
+            </div>
+            </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="https://www.instagram.com/dann_os3d?igsh=aDdzdm8wNHVnN2Vo">Instagram</a>
+        <a href="https://www.behance.net/edwaraospina">Behance</a>
+        <a href="https://dannplay64.artstation.com/">Artstation</a>
+      </div>
+      <p>&copy; 2026 Dann Studio. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxClose">&times;</button>
+      <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15 18l-6-6 6-6"/>
+        </svg>
+      </button>
+      <img src="" alt="" id="lightboxImage">
+      <button class="lightbox-nav lightbox-next" id="lightboxNext">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 18l6-6-6-6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Page Intro Animation - Soft organic entrance
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements to animate
+      const heroBg = document.querySelector('.hero-bg');
+      const heroOverlay = document.querySelector('.hero-overlay');
+      const profileImage = document.querySelector('.profile-image');
+      const heroTitle = document.querySelector('.hero-title');
+      const heroSubtitle = document.querySelector('.hero-subtitle');
+      const scrollIndicator = document.querySelector('.scroll-indicator');
+      const nav = document.querySelector('.nav');
+      const aboutSidebar = document.querySelector('.about-sidebar');
+
+      // Staggered animation sequence with organic timing
+      const animationSequence = [
+        { element: heroBg, delay: 100 },
+        { element: heroOverlay, delay: 200 },
+        { element: profileImage, delay: 600 },
+        { element: heroTitle, delay: 900 },
+        { element: heroSubtitle, delay: 1150 },
+        { element: scrollIndicator, delay: 1600 },
+        { element: nav, delay: 800 },
+        { element: aboutSidebar, delay: 1000 }
+      ];
+
+      // Trigger animations with soft staggered timing
+      animationSequence.forEach(({ element, delay }) => {
+        if (element) {
+          setTimeout(() => {
+            element.classList.add('animate-in');
+          }, delay);
+        }
+      });
+    });
+
+    // Hero Parallax Effect
+    const heroContent = document.getElementById('heroContent');
+    const profileImg = document.querySelector('.profile-image');
+    const title = document.querySelector('.hero-title');
+    const subtitle = document.querySelector('.hero-subtitle');
+    const scrollInd = document.querySelector('.scroll-indicator');
+    
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const scrollProgress = Math.min(scrollY / (windowHeight * 0.8), 1);
+      
+      // Only apply parallax after intro animation has played
+      if (scrollY > 10) {
+        const opacity = Math.max(0, 1 - scrollProgress);
+        const translateY = scrollY * 0.3;
+        
+        // Apply fade out on scroll while preserving intro animation transforms
+        if (profileImg) profileImg.style.opacity = opacity;
+        if (title) title.style.opacity = opacity;
+        if (subtitle) subtitle.style.opacity = opacity;
+        if (scrollInd) scrollInd.style.opacity = Math.max(0, 1 - scrollProgress * 2);
+        
+        heroContent.style.transform = `translateY(${translateY}px)`;
+      }
+    });
+
+    // Mobile Navigation
+    const navToggle = document.getElementById('navToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    navToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('active');
+      navToggle.classList.toggle('active');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+      });
+    });
+
+    // Moodboard Gallery - Random arrangement and decorative effects
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    // Apply random moodboard effects to each item
+    galleryItems.forEach((item, index) => {
+      // Random rotation (-1.5 to 1.5 degrees)
+      const rotations = ['rotate-left', 'rotate-right', ''];
+      const randomRotation = rotations[Math.floor(Math.random() * rotations.length)];
+      if (randomRotation) {
+        item.classList.add(randomRotation);
+      }
+      
+      // Random decorative elements (pins or tape)
+      const decorations = ['has-pin', 'has-tape', ''];
+      const randomDecor = decorations[Math.floor(Math.random() * decorations.length)];
+      if (randomDecor) {
+        item.classList.add(randomDecor);
+      }
+    });
+
+    // Gallery Animation on Scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 100);
+        }
+      });
+    }, observerOptions);
+
+    galleryItems.forEach(item => {
+      observer.observe(item);
+    });
+
+    // Lightbox
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+    
+    let currentIndex = 0;
+    const images = Array.from(galleryItems).map(item => ({
+      src: item.querySelector('img').src,
+      alt: item.querySelector('img').alt
+    }));
+
+    function openLightbox(index) {
+      currentIndex = index;
+      lightboxImage.src = images[index].src;
+      lightboxImage.alt = images[index].alt;
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % images.length;
+      lightboxImage.src = images[currentIndex].src;
+      lightboxImage.alt = images[currentIndex].alt;
+    }
+
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      lightboxImage.src = images[currentIndex].src;
+      lightboxImage.alt = images[currentIndex].alt;
+    }
+
+    galleryItems.forEach((item, index) => {
+      item.addEventListener('click', () => openLightbox(index));
+    });
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightboxNext.addEventListener('click', nextImage);
+    lightboxPrev.addEventListener('click', prevImage);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('active')) return;
+      
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    });
+  </script>
+</body>
+</html>
